@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Simple Chatbot Widget
 
 A lightweight, customizable chatbot widget for websites. This package provides an easy way to add a chat interface to your website with minimal setup.
@@ -74,3 +75,6 @@ Your webhook should respond with JSON in this format:
 ## License
 
 MIT
+=======
+# sit-chatbot-widget
+>>>>>>> 51e6c89c843cdce0c463fc7691d06b4be15ae046
