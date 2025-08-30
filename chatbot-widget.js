@@ -233,7 +233,7 @@
             style.id = 'chatbot-widget-styles';
             style.textContent = `
                 .chatbot-container{position:fixed;bottom:${this.config.position.bottom};right:${this.config.position.right};z-index:9999;display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;will-change:transform}
-                .chatbot-bubble{width:80px;height:80px;border-radius:50%;background-color:${this.config.theme.primaryColor};box-shadow:0 6px 12px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s ease;align-self:flex-end;will-change:transform}
+                .chatbot-bubble{width:80px;height:80px;border-radius:50%;background-color:white;box-shadow:0 6px 12px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s ease;align-self:flex-end;will-change:transform}
                 .chatbot-bubble:hover{transform:scale(1.05)}
                 .chatbot-bubble-icon{width:42px;height:42px}
                 .chatbot-visible-messages{display:flex;flex-direction:column;align-items:flex-end;margin-bottom:12px;max-width:560px;position:fixed;bottom:100px;right:20px;z-index:9998;pointer-events:auto}
@@ -251,7 +251,7 @@
                 .chatbot-widget-message.user{display:flex;justify-content:flex-end}
                 .chatbot-widget-typing{display:flex;margin-bottom:10px;align-items:flex-start}
                 .chatbot-widget-suggested{display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin:12px 0;width:100%;padding:0}
-                .chatbot-widget-visible-message{background-color:${this.config.theme.primaryColor};color:white;padding:12px 18px;border-radius:20px;margin-top:10px;font-size:16px;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,.1);max-width:90%;word-wrap:break-word;white-space:normal;line-height:1.4;overflow-wrap:break-word;animation:fadeIn .3s ease-in-out;display:block;position:relative;z-index:9999;box-sizing:border-box;will-change:transform;transition:transform .2s ease;min-width:280px}
+                .chatbot-widget-visible-message{background-color:white;color:black;padding:12px 18px;border-radius:20px;margin-top:10px;font-size:16px;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,.1);max-width:90%;word-wrap:break-word;white-space:normal;line-height:1.4;overflow-wrap:break-word;animation:fadeIn .3s ease-in-out;display:block;position:relative;z-index:9999;box-sizing:border-box;will-change:transform;transition:transform .2s ease;min-width:280px}
                 .chatbot-widget-visible-message:hover{transform:translateY(-2px)}
                 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
                 @keyframes typingAnimation{0%{opacity:.3}50%{opacity:1}100%{opacity:.3}}
@@ -1076,14 +1076,14 @@
             
             messageElement.innerHTML = `
                 <div style="
-                    background-color: #f3f4f6;
+                    background-color: white;
                     padding: 12px 18px;
                     border-radius: 20px;
                     max-width: 70%;
                     margin-right: 50px;
-                    color: ${this.config.theme.textColor};
+                    color: black;
                     font-size: 16px;
-                    box-shadow: none;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                     white-space: normal;
                     word-wrap: break-word;
                     line-height: 1.4;
