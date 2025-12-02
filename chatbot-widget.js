@@ -232,12 +232,12 @@
             const style = document.createElement('style');
             style.id = 'chatbot-widget-styles';
             style.textContent = `
-                .chatbot-container{position:fixed;bottom:${this.config.position.bottom};right:${this.config.position.right};z-index:9999;display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;will-change:transform}
-                .chatbot-bubble{width:80px;height:80px;border-radius:50%;background-color:white;box-shadow:0 6px 12px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s ease;align-self:flex-end;will-change:transform}
+                .chatbot-container{position:fixed;bottom:${this.config.position.bottom};right:${this.config.position.right};z-index:9999;display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;will-change:transform;pointer-events:none}
+                .chatbot-bubble{width:80px;height:80px;border-radius:50%;background-color:white;box-shadow:0 6px 12px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s ease;align-self:flex-end;will-change:transform;pointer-events:auto}
                 .chatbot-bubble:hover{transform:scale(1.05)}
                 .chatbot-bubble-icon{width:42px;height:42px}
                 .chatbot-visible-messages{display:flex;flex-direction:column;align-items:flex-end;margin-bottom:12px;max-width:560px;position:fixed;bottom:100px;right:20px;z-index:9998;pointer-events:auto}
-                .chatbot-window{width:420px;height:600px;background-color:${this.config.theme.backgroundColor};border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.1);margin-bottom:20px;overflow:hidden;flex-direction:column;will-change:transform,opacity;transition:opacity .2s ease,transform .2s ease}
+                .chatbot-window{width:420px;height:600px;background-color:${this.config.theme.backgroundColor};border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.1);margin-bottom:20px;overflow:hidden;flex-direction:column;will-change:transform,opacity;transition:opacity .2s ease,transform .2s ease;pointer-events:auto}
                 .chatbot-window-hidden{display:none}
                 .chatbot-window-visible{display:flex}
                 .chatbot-header{background-color:${this.config.theme.primaryColor};color:white;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
@@ -342,23 +342,21 @@
                 /* Base styles for mobile devices (320px and up) */
                 @media screen and (max-width: 768px) {
                     .chatbot-container {
+                        position: fixed;
                         bottom: 0;
                         right: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        position: fixed;
-                        padding: 5vw;
-                        box-sizing: border-box;
+                        pointer-events: none;
+                        z-index: 9999;
                     }
                     
                     .chatbot-bubble {
                         width: 60px;
                         height: 60px;
-                        bottom: 5vw;
-                        right: 5vw;
+                        bottom: 20px;
+                        right: 20px;
                         position: fixed;
                         z-index: 10001;
+                        pointer-events: auto;
                     }
                     
                     .chatbot-bubble-icon {
@@ -378,6 +376,7 @@
                         bottom: auto;
                         max-height: 70vh;
                         box-shadow: 0 8px 24px rgba(0,0,0,.15);
+                        pointer-events: auto;
                     }
                     
                     .chatbot-header {
@@ -447,12 +446,13 @@
                     }
                     
                     .chatbot-visible-messages {
-                        bottom: calc(5vw + 70px);
+                        bottom: calc(20px + 70px);
                         right: 5vw;
                         left: 5vw;
                         max-width: none;
                         width: calc(90vw - 10vw);
                         z-index: 10000;
+                        pointer-events: auto;
                     }
                     
                     .chatbot-widget-visible-message {
@@ -669,13 +669,18 @@
                 /* Ensure proper viewport handling */
                 @media screen and (max-width: 768px) {
                     .chatbot-container {
-                        -webkit-overflow-scrolling: touch;
+                        pointer-events: none;
                     }
                     
                     .chatbot-window {
                         -webkit-transform: translateZ(0);
                         transform: translateZ(0);
                         backface-visibility: hidden;
+                        pointer-events: auto;
+                    }
+                    
+                    .chatbot-bubble {
+                        pointer-events: auto;
                     }
                     
                     /* Prevent zoom on input focus for iOS */
