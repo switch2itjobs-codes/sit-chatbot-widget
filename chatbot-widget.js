@@ -210,10 +210,10 @@
                 
                 // Only trigger if it was a quick tap (not a long press) and didn't move
                 if (!touchMoved && touchDuration < 500) {
-                    e.preventDefault();
+                    // Don't prevent default to allow normal touch behaviors
                     callback(e);
                 }
-            });
+            }, { passive: true });
             
             // Mouse events for desktop (with touch device detection)
             if (!this._isMobile()) {
@@ -232,13 +232,14 @@
             const style = document.createElement('style');
             style.id = 'chatbot-widget-styles';
             style.textContent = `
+                *{box-sizing:border-box}
                 .chatbot-container{position:fixed;bottom:${this.config.position.bottom};right:${this.config.position.right};z-index:9999;display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;will-change:transform;pointer-events:none}
                 .chatbot-bubble{width:80px;height:80px;border-radius:50%;background-color:white;box-shadow:0 6px 12px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s ease;align-self:flex-end;will-change:transform;pointer-events:auto}
                 .chatbot-bubble:hover{transform:scale(1.05)}
                 .chatbot-bubble-icon{width:42px;height:42px}
                 .chatbot-visible-messages{display:flex;flex-direction:column;align-items:flex-end;margin-bottom:12px;max-width:560px;position:fixed;bottom:100px;right:20px;z-index:9998;pointer-events:none}
                 .chatbot-window{width:420px;height:600px;background-color:${this.config.theme.backgroundColor};border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.1);margin-bottom:20px;overflow:hidden;flex-direction:column;will-change:transform,opacity;transition:opacity .2s ease,transform .2s ease;pointer-events:auto}
-                .chatbot-window-hidden{display:none}
+                .chatbot-window-hidden{display:none;pointer-events:none}
                 .chatbot-window-visible{display:flex}
                 .chatbot-header{background-color:${this.config.theme.primaryColor};color:white;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
                 .chatbot-messages{flex:1;padding:16px;overflow-y:auto;background-color:${this.config.theme.backgroundColor};scroll-behavior:smooth}
@@ -685,10 +686,22 @@
                         transform: translateZ(0);
                         backface-visibility: hidden;
                         pointer-events: auto;
+                        touch-action: pan-y;
+                    }
+                    
+                    .chatbot-window-hidden {
+                        pointer-events: none !important;
+                        touch-action: none !important;
                     }
                     
                     .chatbot-bubble {
                         pointer-events: auto;
+                        touch-action: manipulation;
+                    }
+                    
+                    
+                    .chatbot-widget-visible-message {
+                        touch-action: manipulation;
                     }
                     
                     /* Prevent zoom on input focus for iOS */
@@ -945,7 +958,13 @@
             const visibleMessages = document.getElementById('chatbot-widget-visible-messages');
             const newState = forceState !== undefined ? forceState : chatWindow.style.display === 'none';
             
-            chatWindow.style.display = newState ? 'flex' : 'none';
+            if (newState) {
+                chatWindow.style.display = 'flex';
+                chatWindow.style.pointerEvents = 'auto';
+            } else {
+                chatWindow.style.display = 'none';
+                chatWindow.style.pointerEvents = 'none';
+            }
             
             // Show/hide visible messages based on chat state
             if (newState) {
