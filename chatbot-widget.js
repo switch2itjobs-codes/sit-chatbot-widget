@@ -234,7 +234,7 @@
             style.textContent = `
                 *{box-sizing:border-box}
                 .chatbot-container{position:fixed;bottom:${this.config.position.bottom};right:${this.config.position.right};z-index:9999;display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;will-change:transform;pointer-events:none}
-                .chatbot-bubble{width:80px;height:80px;border-radius:50%;background-color:white;box-shadow:0 6px 12px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s ease;align-self:flex-end;will-change:transform;pointer-events:auto}
+                .chatbot-bubble{width:80px;height:80px;border-radius:50%;background-color:white;box-shadow:0 6px 12px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s ease;position:fixed;bottom:20px;right:20px;z-index:10001;will-change:transform;pointer-events:auto}
                 .chatbot-bubble:hover{transform:scale(1.05)}
                 .chatbot-bubble-icon{width:42px;height:42px}
                 .chatbot-visible-messages{display:flex;flex-direction:column;align-items:flex-end;margin-bottom:12px;max-width:560px;position:fixed;bottom:100px;right:20px;z-index:9998;pointer-events:none}
@@ -351,18 +351,24 @@
                         width: auto;
                         height: auto;
                         pointer-events: none;
-                        z-index: 9999;
+                        z-index: 99999;
                         display: block;
                     }
                     
                     .chatbot-bubble {
                         width: 60px;
                         height: 60px;
-                        bottom: 20px;
-                        right: 20px;
-                        position: fixed;
-                        z-index: 10001;
-                        pointer-events: auto;
+                        bottom: 20px !important;
+                        right: 20px !important;
+                        left: auto !important;
+                        position: fixed !important;
+                        z-index: 100001 !important;
+                        pointer-events: auto !important;
+                        display: flex !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
+                        background-color: white !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
                     }
                     
                     .chatbot-bubble-icon {
@@ -371,18 +377,22 @@
                     }
                     
                     .chatbot-window {
-                        width: 90vw;
-                        height: 70vh;
+                        width: 90vw !important;
+                        height: 70vh !important;
                         border-radius: 12px;
                         margin: 0 auto;
-                        position: fixed;
-                        top: 15vh;
-                        left: 5vw;
-                        right: 5vw;
-                        bottom: auto;
+                        position: fixed !important;
+                        top: 15vh !important;
+                        left: 5vw !important;
+                        right: 5vw !important;
+                        bottom: auto !important;
                         max-height: 70vh;
                         box-shadow: 0 8px 24px rgba(0,0,0,.15);
-                        pointer-events: auto;
+                        pointer-events: auto !important;
+                        z-index: 100000 !important;
+                        display: flex !important;
+                        visibility: visible !important;
+                        opacity: 1 !important;
                     }
                     
                     .chatbot-header {
@@ -532,8 +542,13 @@
                     .chatbot-bubble {
                         width: 56px;
                         height: 56px;
-                        bottom: 16px;
-                        right: 16px;
+                        bottom: 16px !important;
+                        right: 16px !important;
+                        left: auto !important;
+                        position: fixed !important;
+                        z-index: 100001 !important;
+                        display: flex !important;
+                        visibility: visible !important;
                     }
                     
                     .chatbot-bubble-icon {
@@ -717,8 +732,13 @@
                     .chatbot-bubble {
                         width: 50px;
                         height: 50px;
-                        bottom: 12px;
-                        right: 12px;
+                        bottom: 12px !important;
+                        right: 12px !important;
+                        left: auto !important;
+                        position: fixed !important;
+                        z-index: 100001 !important;
+                        display: flex !important;
+                        visibility: visible !important;
                     }
                     
                     .chatbot-bubble-icon {
@@ -956,21 +976,35 @@
         toggleChat: function(forceState) {
             const chatWindow = document.getElementById('chatbot-widget-window');
             const visibleMessages = document.getElementById('chatbot-widget-visible-messages');
-            const newState = forceState !== undefined ? forceState : chatWindow.style.display === 'none';
+            const isCurrentlyHidden = chatWindow.classList.contains('chatbot-window-hidden') || 
+                                      chatWindow.style.display === 'none' || 
+                                      window.getComputedStyle(chatWindow).display === 'none';
+            const newState = forceState !== undefined ? forceState : isCurrentlyHidden;
             
             if (newState) {
                 chatWindow.style.display = 'flex';
                 chatWindow.style.pointerEvents = 'auto';
+                chatWindow.style.visibility = 'visible';
+                chatWindow.style.opacity = '1';
+                chatWindow.classList.remove('chatbot-window-hidden');
+                chatWindow.classList.add('chatbot-window-visible');
             } else {
                 chatWindow.style.display = 'none';
                 chatWindow.style.pointerEvents = 'none';
+                chatWindow.style.visibility = 'hidden';
+                chatWindow.classList.add('chatbot-window-hidden');
+                chatWindow.classList.remove('chatbot-window-visible');
             }
             
             // Show/hide visible messages based on chat state
             if (newState) {
-                visibleMessages.style.display = 'none';
+                if (visibleMessages) {
+                    visibleMessages.style.display = 'none';
+                }
             } else {
-                visibleMessages.style.display = 'flex';
+                if (visibleMessages) {
+                    visibleMessages.style.display = 'flex';
+                }
             }
             
             // Scroll to bottom when opening
